@@ -45,6 +45,10 @@ public abstract class BTreeNode {
             }
         }
         
+        if (length <= 0) {
+            return false;
+        }
+        
         return true;
     }
 
