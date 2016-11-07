@@ -14,7 +14,7 @@ public class BranchNode extends BTreeNode {
     }
 
     @Override
-    protected void shift(int start, int count) { // 검증완료 
+    protected void rotateLeft(int start, int count) { // 검증완료 
         for (int n = start, c = length - count; n < c; ++n) {
             this.keys[n] = this.keys[n + count];
             this.childNodes[n + 1] = this.childNodes[n + 1 + count];
@@ -26,7 +26,7 @@ public class BranchNode extends BTreeNode {
     }
  
     @Override
-    protected void unshift(int start, int count) {  
+    protected void rotateRight(int start, int count) {  
         for (int n = length - 1; start <= n; --n) {
             this.keys[n + count] = this.keys[n];
             this.childNodes[n + count + 1] = this.childNodes[n + 1];
@@ -49,7 +49,7 @@ public class BranchNode extends BTreeNode {
                 bn.put(keys[n], childNodes[n + 1]);
             } 
             
-            this.shift(degree, length - degree); // 현재노드에서 반틈을 제거
+            this.rotateLeft(degree, length - degree); // 현재노드에서 반틈을 제거
             
             if (siblingRightNode > 0) {
                 BTreeNode siblingNode = system.lookup(siblingRightNode);
@@ -98,7 +98,7 @@ public class BranchNode extends BTreeNode {
         changeNode.siblingRightNode = childNodes[Index + 1];
         
         // 공간확보
-        this.unshift(Index, 1);
+        this.rotateRight(Index, 1);
 
         // 자식노드 삽입
         this.keys[Index] = key;

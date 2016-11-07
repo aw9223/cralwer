@@ -14,7 +14,7 @@ public final class LeafNode extends BTreeNode {
     }
  
     @Override
-    protected void shift(int start, int count) {
+    protected void rotateLeft(int start, int count) {
         for (int n = start, c = length - count; n < c; ++n) {  
             this.keys[n] = this.keys[n + count];
             this.values[n] = this.values[n + count];
@@ -26,7 +26,7 @@ public final class LeafNode extends BTreeNode {
     }
 
     @Override
-    protected void unshift(int start, int count) { 
+    protected void rotateRight(int start, int count) { 
         for (int n = length - 1; start <= n; --n) {  
             this.keys[n + count] = this.keys[n];
             this.values[n + count] = this.values[n];
@@ -52,7 +52,7 @@ public final class LeafNode extends BTreeNode {
                 ln.put(keys[n], values[n]);
             }
 
-            this.shift(degree, length - degree); // 현재 노드의 반틈을 삭제
+            this.rotateLeft(degree, length - degree); // 현재 노드의 반틈을 삭제
 
             this.isDirty = true;
             ln.isDirty = true;
@@ -73,7 +73,7 @@ public final class LeafNode extends BTreeNode {
             }
         }
         
-        this.unshift(n, 1); // 추가하기전에 공간 확보를 위해 unshift 연산 
+        this.rotateRight(n, 1); // 추가하기전에 공간 확보를 위해 unshift 연산 
 
         this.keys[n] = key;
         this.values[n] = value;
@@ -92,7 +92,7 @@ public final class LeafNode extends BTreeNode {
 
         Object o = values[n]; // 발견하면
 
-        this.shift(n, 1); // 삭제하고
+        this.rotateLeft(n, 1); // 삭제하고
 
         this.isDirty = true;
 

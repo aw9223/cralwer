@@ -13,7 +13,7 @@ public class BranchNode_BACKUP extends BTreeNode {
     }
 
     @Override
-    protected void shift(int start, int count) { // 검증완료 
+    protected void rotateLeft(int start, int count) { // 검증완료 
         for (int n = start, c = length - count; n < c; ++n) {
             this.keys[n] = this.keys[n + count];
             this.childNodes[n + 1] = this.childNodes[n + 1 + count];
@@ -25,7 +25,7 @@ public class BranchNode_BACKUP extends BTreeNode {
     }
  
     @Override
-    protected void unshift(int start, int count) {  
+    protected void rotateRight(int start, int count) {  
         for (int n = length - 1; start <= n; --n) {
             this.keys[n + count] = this.keys[n];
             this.childNodes[n + count + 1] = this.childNodes[n + 1];
@@ -48,7 +48,7 @@ public class BranchNode_BACKUP extends BTreeNode {
                 bn.put(keys[n], childNodes[n + 1]);
             }
              
-            this.shift(d, length - d); // 현재노드에서 반틈을 제거
+            this.rotateLeft(d, length - d); // 현재노드에서 반틈을 제거
 
             this.isDirty = true;// system.sync() 호출시 물리적으로도 업데이트 되게 유도
 
@@ -79,7 +79,7 @@ public class BranchNode_BACKUP extends BTreeNode {
         long l = childNodes[number];
 
         // 공간확보
-        this.unshift(number, 1);
+        this.rotateRight(number, 1);
 
         // 자식노드 삽입
         this.keys[number] = key;
@@ -111,14 +111,14 @@ public class BranchNode_BACKUP extends BTreeNode {
         
         if (isRightSibling && childNode.isLeaf()) {
             System.out.println(1);
-            childNode.unshift(0, 1);
+            childNode.rotateRight(0, 1);
             
             childNode.keys[childNode.length - 1] = siblingNode.keys[0];
             childNode.values[childNode.length - 1] = siblingNode.values[0];
             
             this.keys[childIndex] = siblingNode.keys[0]; 
 
-            siblingNode.shift(0, 1);
+            siblingNode.rotateLeft(0, 1);
             
             this.isDirty = true;
             childNode.isDirty = true;
@@ -128,7 +128,7 @@ public class BranchNode_BACKUP extends BTreeNode {
         }
         else if (isRightSibling && childNode.isBranch()) {
             System.out.println(2);
-            childNode.unshift(0, 1);
+            childNode.rotateRight(0, 1);
              
             childNode.keys[childNode.length - 1] = this.keys[childIndex];
             childNode.childNodes[childNode.length] = siblingNode.childNodes[0]; 
@@ -137,7 +137,7 @@ public class BranchNode_BACKUP extends BTreeNode {
             
             this.keys[childIndex] = siblingNode.keys[0];
             
-            siblingNode.shift(0, 1);
+            siblingNode.rotateLeft(0, 1);
 
             this.isDirty = true;
             childNode.isDirty = true;
@@ -147,14 +147,14 @@ public class BranchNode_BACKUP extends BTreeNode {
         } 
         else if (childNode.isLeaf()) {  
             System.out.println(3);
-            childNode.unshift(0, 1);
+            childNode.rotateRight(0, 1);
             
             childNode.keys[0] = siblingNode.keys[siblingNode.length - 1];
             childNode.values[0] = siblingNode.values[siblingNode.length - 1];
             
             this.keys[childIndex - 1] = siblingNode.keys[siblingNode.length - 1];
             
-            siblingNode.shift(siblingNode.length - 1, 1);
+            siblingNode.rotateLeft(siblingNode.length - 1, 1);
 
             this.isDirty = true;
             childNode.isDirty = true;
@@ -164,7 +164,7 @@ public class BranchNode_BACKUP extends BTreeNode {
         }
         else if (childNode.isBranch()) {
             System.out.println(4);
-            childNode.unshift(0, 1);
+            childNode.rotateRight(0, 1);
             
             childNode.keys[0] = this.keys[childIndex - 1];
             childNode.childNodes[1] = childNode.childNodes[0]; 
@@ -172,7 +172,7 @@ public class BranchNode_BACKUP extends BTreeNode {
             
             this.keys[childIndex - 1] = siblingNode.keys[siblingNode.length - 1];
             
-            siblingNode.shift(siblingNode.length - 1, 1);
+            siblingNode.rotateLeft(siblingNode.length - 1, 1);
 
             this.isDirty = true;
             childNode.isDirty = true;
@@ -199,7 +199,7 @@ public class BranchNode_BACKUP extends BTreeNode {
                 childNode.put(siblingNode.keys[n], siblingNode.values[n]);
             }
             
-            this.shift(childIndex, 1);
+            this.rotateLeft(childIndex, 1);
             
             this.isDirty = true;
             childNode.isDirty = true;
@@ -209,7 +209,7 @@ public class BranchNode_BACKUP extends BTreeNode {
             
             int c = childNode.length + 1; // 부모노드에 위치한 키값이 내려와야하므로 + 1을 더함
             
-            childNode.unshift(0, siblingNode.length + 1);
+            childNode.rotateRight(0, siblingNode.length + 1);
             
             childNode.keys[c - 1] = this.keys[childIndex];
             childNode.childNodes[c] = siblingNode.childNodes[0];
@@ -219,7 +219,7 @@ public class BranchNode_BACKUP extends BTreeNode {
                 childNode.childNodes[n + c + 1] = siblingNode.childNodes[n + 1];
             }
             
-            this.shift(childIndex, 1);
+            this.rotateLeft(childIndex, 1);
             
             this.isDirty = true;
             childNode.isDirty = true;
@@ -231,7 +231,7 @@ public class BranchNode_BACKUP extends BTreeNode {
                 siblingNode.put(childNode.keys[n], childNode.values[n]);
             }
             
-            this.shift(childIndex - 1, 1);
+            this.rotateLeft(childIndex - 1, 1);
              
             this.isDirty = true;
             childNode.isDirty = true; 
@@ -241,7 +241,7 @@ public class BranchNode_BACKUP extends BTreeNode {
    
             int c = siblingNode.length + 1; // 부모노드에 위치한 키값이 내려와야하므로 + 1을 더함
             
-            siblingNode.unshift(siblingNode.length - 1, childNode.length + 1);
+            siblingNode.rotateRight(siblingNode.length - 1, childNode.length + 1);
             
             siblingNode.keys[c - 1] = this.keys[childIndex - 1];
             siblingNode.childNodes[c] = childNode.childNodes[0];
@@ -251,7 +251,7 @@ public class BranchNode_BACKUP extends BTreeNode {
                 siblingNode.childNodes[n + c + 1] = childNode.childNodes[n + 1];
             } 
             
-            this.shift(childIndex - 1, 1);
+            this.rotateLeft(childIndex - 1, 1);
             
             this.isDirty = true;
             childNode.isDirty = true; 

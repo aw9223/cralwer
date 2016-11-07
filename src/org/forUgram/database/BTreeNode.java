@@ -52,8 +52,14 @@ public abstract class BTreeNode {
         return true;
     }
 
-    protected abstract void shift(int start, int count);
-    protected abstract void unshift(int start, int count);
+    protected abstract void rotateLeft(int start, int count);
+    protected abstract void rotateRight(int start, int count);
+    
+    protected abstract boolean redistLeft();
+    protected abstract boolean redistRight();
+    
+    protected abstract boolean mergeLeft();
+    protected abstract boolean mergeRight();
 
     protected abstract boolean put(Comparable key, Serializable value) throws OverflowException;
     protected abstract boolean put(Comparable key, long childNode); // 키, 값 넣기
