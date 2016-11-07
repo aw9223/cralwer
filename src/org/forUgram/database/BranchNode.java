@@ -3,7 +3,6 @@ package org.forUgram.database;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import org.forUgram.common.StringUtils;
-import static org.forUgram.database.BTreeFileSystem.DEBUG;
 
 public class BranchNode extends BTreeNode {
 
@@ -239,7 +238,6 @@ public class BranchNode extends BTreeNode {
             }   
 
             sb.append(StringUtils.tabbedOf(depth)).append("◎:").append(address).append('\n');
-
             sb.append(StringUtils.tabbedOf(depth)).append("-[").append(keys[n]).append("]<\n");
             
             if (siblingLeftNode > 0) {
@@ -250,5 +248,25 @@ public class BranchNode extends BTreeNode {
         }
         
         return sb.toString();
+    }
+
+    @Override
+    protected boolean redistLeft() {
+        return true; // TODO
+    }
+
+    @Override
+    protected boolean redistRight() {
+        return true; // TODO
+    }
+
+    @Override
+    protected boolean mergeLeft() {
+        return false;
+    }
+
+    @Override
+    protected boolean mergeRight() {
+        return false;
     }
 }

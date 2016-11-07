@@ -12,7 +12,8 @@ public abstract class BTreeNode {
     protected Comparable[] keys;// 키 배열
     protected Serializable[] values;
     protected long[] childNodes; // 자식 노드
-    protected long siblingLeftNode, siblingRightNode;
+    protected long siblingLeftNode = -1;
+    protected long siblingRightNode = -1;
 
     protected byte length = 0;// 현재 개수
 

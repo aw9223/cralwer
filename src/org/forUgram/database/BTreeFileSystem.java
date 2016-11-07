@@ -14,8 +14,6 @@ import org.forUgram.common.LRUCache;
  
 public final class BTreeFileSystem<K extends Comparable, V extends Serializable> {  
     
-    public static boolean DEBUG = false;
-    
     private static final int DEFAULT_DEGREE = 2;
     private static final int HEADER_LENGTH = Long.BYTES + Integer.BYTES + Long.BYTES + Long.BYTES;
     

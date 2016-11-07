@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.forUgram.database.BTreeFileSystem; 
 import org.forUgram.database.Serializer;
 
-public class BTree1 {
+public class BTreePut {
     
     private static ArrayList<String> arr = new ArrayList<String>();
 

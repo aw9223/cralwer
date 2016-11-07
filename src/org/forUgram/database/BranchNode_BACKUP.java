@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import org.forUgram.common.StringUtils;
 
-public class BranchNode_BACKUP extends BTreeNode {
-
+public class BranchNode_BACKUP { //extends BTreeNode {
+/*
     protected BranchNode_BACKUP(BTreeFileSystem system) {
         super(system);
 
@@ -270,7 +270,7 @@ public class BranchNode_BACKUP extends BTreeNode {
      * @param key
      * @return
      * @throws NoSuchKeyException 
-     */
+     *
     @Override
     protected Object remove(Comparable key) throws NoSuchKeyException {
         int n = indexOf(key);
@@ -410,5 +410,5 @@ public class BranchNode_BACKUP extends BTreeNode {
             sb.append(system.lookup(childNodes[n]).toString(depth + 1));
         }
         return sb.toString();
-    }
+    }*/
 }

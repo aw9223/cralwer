@@ -3,7 +3,6 @@ package org.forUgram.database;
 import java.io.Serializable;
 import java.nio.ByteBuffer; 
 import org.forUgram.common.StringUtils;
-import static org.forUgram.database.BTreeFileSystem.DEBUG;
 
 public final class LeafNode extends BTreeNode {
 
@@ -38,6 +37,52 @@ public final class LeafNode extends BTreeNode {
     }
 
     @Override
+    protected boolean redistLeft() {
+        if (siblingLeftNode < 0) {
+            return false;
+        }
+        
+        LeafNode siblingNode = (LeafNode) system.lookup(siblingLeftNode);
+        if ((siblingNode.avaliable() - 1) < 0) {
+            return false;
+        }
+        
+        // TODO
+        
+        siblingNode.isDirty = true;
+        this.isDirty = true;
+        return true;
+    }
+
+    @Override
+    protected boolean redistRight() {
+        if (siblingRightNode < 0) {
+            return false;
+        }
+        
+        LeafNode siblingNode = (LeafNode) system.lookup(siblingRightNode);
+        if ((siblingNode.avaliable() - 1) < 0) {
+            return false;
+        }
+        
+        // TODO
+        
+        siblingNode.isDirty = true;
+        this.isDirty = true;
+        return true;
+    }
+
+    @Override
+    protected boolean mergeLeft() {
+        return false;
+    }
+
+    @Override
+    protected boolean mergeRight() {
+        return false;
+    }
+
+    @Override
     protected boolean put(Comparable key, long childNode) {
         throw new UnsupportedOperationException("마지막 노드에서는 지원하지 않습니다.");
     }
@@ -56,11 +101,6 @@ public final class LeafNode extends BTreeNode {
 
             this.isDirty = true;
             ln.isDirty = true;
-
-            if(DEBUG) {
-                System.out.println(ln);
-                System.out.println("LeafNode");
-            }
             
             // 나머지작업 (새로운 노드추가) 는 부모노드에서 처리
             throw new OverflowException(ln.keys[0], system.alloc(ln)); 
