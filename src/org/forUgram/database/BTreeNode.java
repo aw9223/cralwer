@@ -53,8 +53,8 @@ public abstract class BTreeNode {
         return true;
     }
 
-    protected abstract void rotateLeft(int start, int count);
-    protected abstract void rotateRight(int start, int count);
+    protected abstract void shiftLeft(int start, int count);
+    protected abstract void shitftRight(int start, int count);
     
     protected abstract boolean redistLeft();
     protected abstract boolean redistRight();
