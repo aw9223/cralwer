@@ -118,6 +118,13 @@ public class BranchNode extends BTreeNode {
          
         Object o = bn.remove(key);  
         
+        if (bn.avaliable() < 0) {
+            
+            if (bn.redistLeft() || bn.redistRight()) {
+                // TODO 키값이 바껴야함
+            }
+        }
+        
         return o;
     }
 

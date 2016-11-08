@@ -47,7 +47,12 @@ public final class LeafNode extends BTreeNode {
             return false;
         }
         
-        // TODO
+        shiftRight(0, 1);
+        
+        this.keys[0] = siblingNode.keys[siblingNode.length - 1];
+        this.values[0] = siblingNode.values[siblingNode.length - 1];
+        
+        siblingNode.shiftLeft(siblingNode.length - 1, 1);
         
         siblingNode.isDirty = true;
         this.isDirty = true;
@@ -65,7 +70,12 @@ public final class LeafNode extends BTreeNode {
             return false;
         }
         
-        // TODO
+        shiftRight(length - 1, 1);
+        
+        this.keys[0] = siblingNode.keys[siblingNode.length - 1];
+        this.values[0] = siblingNode.values[siblingNode.length - 1];
+        
+        siblingNode.shiftLeft(0, 1);
         
         siblingNode.isDirty = true;
         this.isDirty = true;
