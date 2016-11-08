@@ -54,7 +54,7 @@ public abstract class BTreeNode {
     }
 
     protected abstract void shiftLeft(int start, int count);
-    protected abstract void shitftRight(int start, int count);
+    protected abstract void shiftRight(int start, int count);
     
     protected abstract boolean redistLeft();
     protected abstract boolean redistRight();

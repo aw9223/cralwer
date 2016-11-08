@@ -25,7 +25,7 @@ public final class LeafNode extends BTreeNode {
     }
 
     @Override
-    protected void shitftRight(int start, int count) { 
+    protected void shiftRight(int start, int count) { 
         for (int n = length - 1; start <= n; --n) {  
             this.keys[n + count] = this.keys[n];
             this.values[n + count] = this.values[n];
@@ -113,7 +113,7 @@ public final class LeafNode extends BTreeNode {
             }
         }
         
-        this.shitftRight(n, 1); // 추가하기전에 공간 확보를 위해 unshift 연산 
+        this.shiftRight(n, 1); // 추가하기전에 공간 확보를 위해 unshift 연산 
 
         this.keys[n] = key;
         this.values[n] = value;

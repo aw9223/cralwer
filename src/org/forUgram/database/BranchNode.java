@@ -25,7 +25,7 @@ public class BranchNode extends BTreeNode {
     }
  
     @Override
-    protected void shitftRight(int start, int count) {  
+    protected void shiftRight(int start, int count) {  
         for (int n = length - 1; start <= n; --n) {
             this.keys[n + count] = this.keys[n];
             this.childNodes[n + count + 1] = this.childNodes[n + 1];
@@ -97,7 +97,7 @@ public class BranchNode extends BTreeNode {
         changeNode.siblingRightNode = childNodes[Index + 1];
         
         // 공간확보
-        this.shitftRight(Index, 1);
+        this.shiftRight(Index, 1);
 
         // 자식노드 삽입
         this.keys[Index] = key;
