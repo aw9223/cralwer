@@ -72,8 +72,8 @@ public final class LeafNode extends BTreeNode {
         
         shiftRight(length - 1, 1);
         
-        this.keys[0] = siblingNode.keys[siblingNode.length - 1];
-        this.values[0] = siblingNode.values[siblingNode.length - 1];
+        this.keys[length - 1] = siblingNode.keys[0];
+        this.values[length - 1] = siblingNode.values[0];
         
         siblingNode.shiftLeft(0, 1);
         
