@@ -89,24 +89,24 @@ public class BranchNode extends BTreeNode {
         return put(n, key, childNode);
     }
     
-    private boolean put(int Index, Comparable key, long childNode) {
+    private boolean put(int Index, Comparable key, long childNodeAddress) {
         BTreeNode bn = system.lookup(childNodes[Index]);
-        BTreeNode changeNode = system.lookup(childNode);
+        BTreeNode cn = system.lookup(childNodeAddress);
         
-        bn.siblingRightNode = childNode; 
-        changeNode.siblingRightNode = childNodes[Index + 1];
+        bn.siblingRightNode = childNodeAddress; 
+        cn.siblingRightNode = childNodes[Index + 1];
         
         // 공간확보
         this.shiftRight(Index, 1);
 
         // 자식노드 삽입
         this.keys[Index] = key;
-        this.childNodes[Index + 1] = childNode;
+        this.childNodes[Index + 1] = childNodeAddress;
         
         // system.sync() 호출시 물리적으로도 업데이트 되게 유도
         this.isDirty = true; 
         bn.isDirty = true;
-        changeNode.isDirty = true;
+        cn.isDirty = true;
         
         return true;
     }
